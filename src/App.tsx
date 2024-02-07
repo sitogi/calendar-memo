@@ -1,11 +1,9 @@
 import { JSX } from 'react';
 
-import styles from '~/App.module.css';
-
 export const App = (): JSX.Element => {
   return (
-    <div className={styles.container}>
-      <p className={styles.text}>Hello Vite React boilerplate!</p>
+    <div className="grid place-content-center w-dvw h-dvh">
+      <h1 className="text-blue-300 text-3xl font-bold underline">Hello world!</h1>
     </div>
   );
 };
