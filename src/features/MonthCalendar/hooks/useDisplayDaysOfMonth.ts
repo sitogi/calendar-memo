@@ -10,8 +10,8 @@ type ReturnType = {
 
 export const useDisplayDaysOfMonth = (year: number, month: number, weekOrigin: WeekOrigin = 'sun'): ReturnType => {
   const daysOfFirstWeekOfPrevMonth = useMemo(() => {
-    return getPrevMonthDaysOfFirstWeek(Number(year), Number(month));
-  }, [year, month]);
+    return getPrevMonthDaysOfFirstWeek(Number(year), Number(month), weekOrigin);
+  }, [year, month, weekOrigin]);
 
   const endDayOfMonth = useMemo(() => {
     return getEndDayOfMonth(Number(year), Number(month));
@@ -19,7 +19,7 @@ export const useDisplayDaysOfMonth = (year: number, month: number, weekOrigin: W
 
   const nextMonthDaysOfFinalWeek = useMemo(() => {
     return getNextMonthDaysOfFinalWeek(Number(year), Number(month), weekOrigin);
-  }, [year, month]);
+  }, [year, month, weekOrigin]);
 
   const weekdays = useMemo(() => {
     return getWeekDays(weekOrigin);
