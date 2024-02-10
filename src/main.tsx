@@ -1,12 +1,25 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import '~/main.css';
-import { App } from '~/App';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+import '~/main.css';
+import { MonthCalendar } from '~/features/MonthCalendar';
+import { Root } from '~/routes/Root';
+
+const router = createBrowserRouter([
+  {
+    path: '/month/:year/:month',
+    element: <MonthCalendar />,
+  },
+  {
+    path: '/',
+    element: <Root />,
+  },
+]);
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );
