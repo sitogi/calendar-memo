@@ -2,6 +2,7 @@ import { JSX } from 'react';
 
 import { Link } from 'react-router-dom';
 
+import { buttonVariants } from '~/components/ui/button';
 import { useDateParams } from '~/features/MonthCalendar/hooks/useDateParams';
 import { useDisplayDaysOfMonth } from '~/features/MonthCalendar/hooks/useDisplayDaysOfMonth';
 
@@ -12,20 +13,20 @@ export const MonthCalendar = (): JSX.Element => {
   return (
     <div className="h-screen flex flex-col">
       <div className="flex items-center justify-between h-16 px-16">
-        <Link to="/month" className="grid place-content-center border rounded w-20 h-8">
+        <Link to="/month" className={buttonVariants({ variant: 'outline' })}>
           Today
         </Link>
         <div className="flex items-center justify-center gap-16">
           <Link
             to={`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`}
-            className="grid place-content-center border rounded w-20 h-8"
+            className={buttonVariants({ variant: 'outline' })}
           >
             Prev
           </Link>
           <h1 className="text-center text-3xl">{`${year} - ${month}`}</h1>
           <Link
             to={`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`}
-            className="grid place-content-center border rounded w-20 h-8"
+            className={buttonVariants({ variant: 'outline' })}
           >
             Next
           </Link>
