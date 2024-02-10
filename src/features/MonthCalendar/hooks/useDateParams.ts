@@ -8,5 +8,8 @@ type ReturnType = {
 export const useDateParams = (): ReturnType => {
   const { year, month } = useParams();
 
-  return { year: Number(year), month: Number(month) };
+  return {
+    year: year === undefined ? new Date().getFullYear() : Number(year),
+    month: month === undefined ? new Date().getMonth() + 1 : Number(month),
+  };
 };

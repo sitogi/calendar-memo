@@ -11,20 +11,26 @@ export const MonthCalendar = (): JSX.Element => {
 
   return (
     <div className="h-screen flex flex-col">
-      <div className="flex items-center justify-center h-16 gap-16">
-        <Link
-          to={`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`}
-          className="grid place-content-center border rounded w-20 h-8"
-        >
-          Prev
+      <div className="flex items-center justify-between h-16 px-16">
+        <Link to="/month" className="grid place-content-center border rounded w-20 h-8">
+          Today
         </Link>
-        <h1 className="text-center text-3xl">{`${year} - ${month}`}</h1>
-        <Link
-          to={`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`}
-          className="grid place-content-center border rounded w-20 h-8"
-        >
-          Next
-        </Link>
+        <div className="flex items-center justify-center gap-16">
+          <Link
+            to={`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`}
+            className="grid place-content-center border rounded w-20 h-8"
+          >
+            Prev
+          </Link>
+          <h1 className="text-center text-3xl">{`${year} - ${month}`}</h1>
+          <Link
+            to={`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`}
+            className="grid place-content-center border rounded w-20 h-8"
+          >
+            Next
+          </Link>
+        </div>
+        <div>TODO</div>
       </div>
       <div className="grid grid-cols-7 h-8">
         {weekdays.map((weekday) => {
