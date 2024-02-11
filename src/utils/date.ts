@@ -36,8 +36,13 @@ export function getPrevMonthDaysOfFirstWeek(year: number, month: number, weekOri
 export function getNextMonthDaysOfFinalWeek(year: number, month: number, weekOrigin: WeekOrigin = 'sun'): Date[] {
   const date = new Date(year, month - 1);
   const endOfMonth = lastDayOfMonth(date);
-  const weekDay = getDay(endOfMonth);
-  const end = weekOrigin === 'sun' ? 6 - weekDay : 7 - weekDay;
+  const finalWeekday = getDay(endOfMonth);
+
+  if (finalWeekday === 0 && weekOrigin === 'mon') {
+    return [];
+  }
+
+  const end = weekOrigin === 'sun' ? 6 - finalWeekday : 7 - finalWeekday;
   const dates: Date[] = [];
 
   for (let i = 1; i <= end; i++) {
