@@ -77,18 +77,29 @@ export const MonthCalendar = (): JSX.Element => {
       </div>
       <div className="h-full grid grid-cols-7 grid-rows-auto-fill border-t border-l">
         {displayDates.map((date, index) => (
-          <Day key={index} date={date} />
+          <Day key={index} date={date} displayedMonth={month} />
         ))}
       </div>
     </div>
   );
 };
 
-const Day = ({ date }: { date: Date }): JSX.Element => {
+const Day = ({ date, displayedMonth }: { date: Date; displayedMonth: number }): JSX.Element => {
+  const isDisplayedMonthDate = date.getMonth() !== displayedMonth - 1;
+
   return (
     <div className={cn('h-full', 'border-b', 'border-r')}>
       <div className={cn('flex', 'items-center', 'justify-center', 'h-12')}>
-        <div className={cn('size-8', 'text-center', isToday(date) && 'bg-green-400 rounded p-1')}>{date.getDate()}</div>
+        <div
+          className={cn(
+            'size-8',
+            'text-center',
+            isToday(date) && 'bg-green-400 rounded p-1',
+            isDisplayedMonthDate && 'text-gray-300',
+          )}
+        >
+          {date.getDate()}
+        </div>
       </div>
     </div>
   );
