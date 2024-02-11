@@ -1,10 +1,10 @@
 import { useMemo } from 'react';
 
 import { WeekOrigin } from '~/features/MonthCalendar/types';
-import { getEndDayOfMonth, getNextMonthDaysOfFinalWeek, getPrevMonthDaysOfFirstWeek, getWeekDays } from '~/utils/date';
+import { getEndDateOfMonth, getNextMonthDaysOfFinalWeek, getPrevMonthDaysOfFirstWeek, getWeekDays } from '~/utils/date';
 
 type ReturnType = {
-  displayDays: number[];
+  displayDates: Date[];
   weekdays: string[];
 };
 
@@ -13,8 +13,8 @@ export const useDisplayDaysOfMonth = (year: number, month: number, weekOrigin: W
     return getPrevMonthDaysOfFirstWeek(Number(year), Number(month), weekOrigin);
   }, [year, month, weekOrigin]);
 
-  const endDayOfMonth = useMemo(() => {
-    return getEndDayOfMonth(Number(year), Number(month));
+  const endDateOfMonth = useMemo(() => {
+    return getEndDateOfMonth(Number(year), Number(month));
   }, [year, month]);
 
   const nextMonthDaysOfFinalWeek = useMemo(() => {
@@ -25,12 +25,19 @@ export const useDisplayDaysOfMonth = (year: number, month: number, weekOrigin: W
     return getWeekDays(weekOrigin);
   }, [weekOrigin]);
 
-  const displayDays: number[] = [];
-  displayDays.push(...daysOfFirstWeekOfPrevMonth);
-  for (let i = 1; i <= endDayOfMonth; i++) {
-    displayDays.push(i);
-  }
-  displayDays.push(...nextMonthDaysOfFinalWeek);
+  const displayDates: Date[] = [];
 
-  return { displayDays, weekdays };
+  displayDates.push(...daysOfFirstWeekOfPrevMonth);
+
+  for (let i = 1; i <= endDateOfMonth.getDate(); i++) {
+    const date = new Date();
+    date.setFullYear(year);
+    date.setMonth(month - 1);
+    date.setDate(i);
+    displayDates.push(date);
+  }
+
+  displayDates.push(...nextMonthDaysOfFinalWeek);
+
+  return { displayDates, weekdays };
 };

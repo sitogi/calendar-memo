@@ -1,5 +1,6 @@
 import { JSX, useState } from 'react';
 
+import { isToday } from 'date-fns';
 import { ArrowLeft, ArrowRight, CalendarHeart, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -16,11 +17,12 @@ import {
 import { useDateParams } from '~/features/MonthCalendar/hooks/useDateParams';
 import { useDisplayDaysOfMonth } from '~/features/MonthCalendar/hooks/useDisplayDaysOfMonth';
 import { WeekOrigin } from '~/features/MonthCalendar/types';
+import { cn } from '~/lib/utils';
 
 export const MonthCalendar = (): JSX.Element => {
   const { year, month } = useDateParams();
   const [weekOrigin, setWeekOrigin] = useState<WeekOrigin>('sun');
-  const { displayDays, weekdays } = useDisplayDaysOfMonth(year, month, weekOrigin);
+  const { displayDates, weekdays } = useDisplayDaysOfMonth(year, month, weekOrigin);
 
   return (
     <div className="h-screen flex flex-col">
@@ -74,18 +76,20 @@ export const MonthCalendar = (): JSX.Element => {
         })}
       </div>
       <div className="h-full grid grid-cols-7 grid-rows-auto-fill border-t border-l">
-        {displayDays.map((day, index) => (
-          <Day key={index} day={day} />
+        {displayDates.map((date, index) => (
+          <Day key={index} date={date} />
         ))}
       </div>
     </div>
   );
 };
 
-const Day = ({ day }: { day: number }): JSX.Element => {
+const Day = ({ date }: { date: Date }): JSX.Element => {
   return (
-    <div className="h-full border-b border-r">
-      <div className="flex items-center justify-center h-12">{day}</div>
+    <div className={cn('h-full', 'border-b', 'border-r')}>
+      <div className={cn('flex', 'items-center', 'justify-center', 'h-12')}>
+        <div className={cn('size-8', 'text-center', isToday(date) && 'bg-green-400 rounded p-1')}>{date.getDate()}</div>
+      </div>
     </div>
   );
 };
