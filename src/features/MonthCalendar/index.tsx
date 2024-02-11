@@ -69,7 +69,10 @@ export const MonthCalendar = (): JSX.Element => {
       <div className="grid grid-cols-7 h-8">
         {weekdays.map((weekday) => {
           return (
-            <div key={weekday} className="text-center">
+            <div
+              key={weekday}
+              className={cn('text-center', weekday === 'Sat' && 'text-blue-500', weekday === 'Sun' && 'text-red-400')}
+            >
               {weekday}
             </div>
           );
