@@ -2,7 +2,7 @@ import { JSX, useState } from 'react';
 
 import { isToday } from 'date-fns';
 import { ArrowLeft, ArrowRight, CalendarHeart, Settings } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Button, buttonVariants } from '~/components/ui/button';
 import {
@@ -23,6 +23,8 @@ export const MonthCalendar = (): JSX.Element => {
   const { year, month } = useDateParams();
   const [weekOrigin, setWeekOrigin] = useState<WeekOrigin>('sun');
   const { displayDates, weekdays } = useDisplayDaysOfMonth(year, month, weekOrigin);
+  const navigate = useNavigate();
+  const [viewTransitionName, setViewTransitionName] = useState('next-calendar');
 
   return (
     <div className="h-screen flex flex-col">
@@ -32,21 +34,33 @@ export const MonthCalendar = (): JSX.Element => {
           Today
         </Link>
         <div className="flex items-center justify-center gap-16">
-          <Link
+          <a
             className={buttonVariants({ variant: 'ghost' })}
-            to={`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`}
+            href="#"
+            onClick={() => {
+              setViewTransitionName('prev-calendar');
+              document.startViewTransition(() => {
+                navigate(`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`);
+              });
+            }}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
             Prev
-          </Link>
+          </a>
           <h1 className="text-center text-3xl w-36">{`${year} - ${month}`}</h1>
-          <Link
+          <a
             className={buttonVariants({ variant: 'ghost' })}
-            to={`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`}
+            href="#"
+            onClick={() => {
+              setViewTransitionName('next-calendar');
+              document.startViewTransition(() => {
+                navigate(`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`);
+              });
+            }}
           >
             Next
             <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
+          </a>
         </div>
         <div>
           <DropdownMenu>
@@ -78,7 +92,7 @@ export const MonthCalendar = (): JSX.Element => {
           );
         })}
       </div>
-      <div className="h-full grid grid-cols-7 grid-rows-auto-fill border-t border-l">
+      <div className="h-full grid grid-cols-7 grid-rows-auto-fill border-t border-l" style={{ viewTransitionName }}>
         {displayDates.map((date, index) => (
           <Day key={index} date={date} displayedMonth={month} />
         ))}
