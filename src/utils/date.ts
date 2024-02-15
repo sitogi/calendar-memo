@@ -55,3 +55,19 @@ export function getNextMonthDaysOfFinalWeek(year: number, month: number, weekOri
 
   return dates;
 }
+
+type ComparisonResult = 'past' | 'present' | 'future';
+
+export function compareWithCurrentDate(year: number, month: number): ComparisonResult {
+  const currentDate = new Date();
+  const currentYear = currentDate.getFullYear();
+  const currentMonth = currentDate.getMonth() + 1;
+
+  if (year < currentYear || (year === currentYear && month < currentMonth)) {
+    return 'past';
+  } else if (year > currentYear || (year === currentYear && month > currentMonth)) {
+    return 'future';
+  } else {
+    return 'present';
+  }
+}
