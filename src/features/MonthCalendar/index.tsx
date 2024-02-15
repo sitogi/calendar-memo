@@ -2,7 +2,7 @@ import { JSX, useState } from 'react';
 
 import { isToday } from 'date-fns';
 import { ArrowLeft, ArrowRight, CalendarHeart, Settings } from 'lucide-react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { Button, buttonVariants } from '~/components/ui/button';
 import {
@@ -17,18 +17,20 @@ import {
 import { useDateParams } from '~/features/MonthCalendar/hooks/useDateParams';
 import { useDisplayDaysOfMonth } from '~/features/MonthCalendar/hooks/useDisplayDaysOfMonth';
 import { WeekOrigin } from '~/features/MonthCalendar/types';
+import { useNavigateWithViewTransition } from '~/hooks/useNavigateWithViewTransition';
 import { cn } from '~/lib/utils';
 
 export const MonthCalendar = (): JSX.Element => {
   const { year, month } = useDateParams();
   const [weekOrigin, setWeekOrigin] = useState<WeekOrigin>('sun');
   const { displayDates, weekdays } = useDisplayDaysOfMonth(year, month, weekOrigin);
-  const navigate = useNavigate();
   const [viewTransitionName, setViewTransitionName] = useState('next-calendar');
+  const { navigateWithViewTransition } = useNavigateWithViewTransition();
 
   return (
     <div className="h-screen flex flex-col">
       <div className="flex items-center justify-between h-16 px-16 border-b mb-4">
+        {/* TODO: today で、今より過去かどうかみて viewTransitionName をセットする */}
         <Link to="/month" className={buttonVariants({ variant: 'ghost' })}>
           <CalendarHeart className="mr-2 h-4 w-4" />
           Today
@@ -39,9 +41,7 @@ export const MonthCalendar = (): JSX.Element => {
             href="#"
             onClick={() => {
               setViewTransitionName('prev-calendar');
-              document.startViewTransition(() => {
-                navigate(`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`);
-              });
+              navigateWithViewTransition(`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`);
             }}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -53,9 +53,7 @@ export const MonthCalendar = (): JSX.Element => {
             href="#"
             onClick={() => {
               setViewTransitionName('next-calendar');
-              document.startViewTransition(() => {
-                navigate(`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`);
-              });
+              navigateWithViewTransition(`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`);
             }}
           >
             Next
