@@ -1,6 +1,5 @@
 import { JSX, useState } from 'react';
 
-import { isToday } from 'date-fns';
 import { ArrowLeft, ArrowRight, CalendarHeart, Settings } from 'lucide-react';
 
 import { Button } from '~/components/ui/button';
@@ -14,19 +13,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
-import { useDisplayDaysOfMonth } from '~/features/MonthCalendar/hooks/useDisplayDaysOfMonth';
 import { WeekOrigin } from '~/features/MonthCalendar/types';
+import { useDisplayDaysOfWeek } from '~/features/WeekCalendar/hooks/useDisplayDaysOfWeek';
 import { useDateParams } from '~/hooks/useDateParams';
 import { useNavigateWithViewTransition } from '~/hooks/useNavigateWithViewTransition';
-import { cn } from '~/lib/utils';
 import { compareWithCurrentDate } from '~/utils/date';
 
-export const MonthCalendar = (): JSX.Element => {
-  const { year, month } = useDateParams();
+export const WeekCalendar = (): JSX.Element => {
+  const { year, month, day } = useDateParams();
+  console.log({ year, month, day });
   const [weekOrigin, setWeekOrigin] = useState<WeekOrigin>('sun');
-  const { displayDates, weekdays } = useDisplayDaysOfMonth(year, month, weekOrigin);
-  const [viewTransitionName, setViewTransitionName] = useState('next-calendar');
+  const { displayDates } = useDisplayDaysOfWeek(year, month, day, weekOrigin);
+  // const [viewTransitionName, setViewTransitionName] = useState('next-calendar');
   const { navigateWithViewTransition } = useNavigateWithViewTransition();
+
+  console.log(displayDates);
 
   return (
     <div className="h-screen flex flex-col">
@@ -38,7 +39,7 @@ export const MonthCalendar = (): JSX.Element => {
               return;
             }
 
-            setViewTransitionName(result === 'past' ? 'next-calendar' : 'prev-calendar');
+            // setViewTransitionName(result === 'past' ? 'next-calendar' : 'prev-calendar');
             navigateWithViewTransition('/month');
           }}
         >
@@ -48,7 +49,7 @@ export const MonthCalendar = (): JSX.Element => {
         <div className="flex items-center justify-center gap-16">
           <ButtonLink
             onClick={() => {
-              setViewTransitionName('prev-calendar');
+              // setViewTransitionName('prev-calendar');
               navigateWithViewTransition(`/month/${month === 1 ? year - 1 : year}/${month === 1 ? 12 : month - 1}`);
             }}
           >
@@ -58,7 +59,7 @@ export const MonthCalendar = (): JSX.Element => {
           <h1 className="text-center text-3xl w-36">{`${year} - ${month}`}</h1>
           <ButtonLink
             onClick={() => {
-              setViewTransitionName('next-calendar');
+              // setViewTransitionName('next-calendar');
               navigateWithViewTransition(`/month/${month === 12 ? year + 1 : year}/${month === 12 ? 1 : month + 1}`);
             }}
           >
@@ -84,44 +85,9 @@ export const MonthCalendar = (): JSX.Element => {
           </DropdownMenu>
         </div>
       </div>
-      <div className="grid grid-cols-7 h-8">
-        {weekdays.map((weekday) => {
-          return (
-            <div
-              key={weekday}
-              className={cn('text-center', weekday === 'Sat' && 'text-blue-500', weekday === 'Sun' && 'text-red-400')}
-            >
-              {weekday}
-            </div>
-          );
-        })}
-      </div>
-      <div className="h-full grid grid-cols-7 grid-rows-auto-fill border-t border-l" style={{ viewTransitionName }}>
-        {displayDates.map((date, index) => (
-          <Day key={index} date={date} displayedMonth={month} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const Day = ({ date, displayedMonth }: { date: Date; displayedMonth: number }): JSX.Element => {
-  const isDisplayedMonthDate = date.getMonth() !== displayedMonth - 1;
-
-  return (
-    <div className={cn('h-full', 'border-b', 'border-r')}>
-      <div className={cn('flex', 'items-center', 'justify-center', 'h-12')}>
-        <div
-          className={cn(
-            'size-8',
-            'text-center',
-            isToday(date) && 'bg-green-400 rounded p-1',
-            isDisplayedMonthDate && 'text-gray-300',
-          )}
-        >
-          {date.getDate()}
-        </div>
-      </div>
+      {displayDates.map((date) => (
+        <div key={date.toDateString()}>{date.toDateString()}</div>
+      ))}
     </div>
   );
 };

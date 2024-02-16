@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import '~/main.css';
 import { MonthCalendar } from '~/features/MonthCalendar';
+import { WeekCalendar } from '~/features/WeekCalendar';
 import { Root } from '~/routes/Root';
 
 const router = createBrowserRouter([
@@ -15,6 +16,14 @@ const router = createBrowserRouter([
   {
     path: '/month',
     element: <MonthCalendar />,
+  },
+  {
+    path: '/week/:year/:month/:day',
+    element: <WeekCalendar />,
+  },
+  {
+    path: '/week',
+    element: <WeekCalendar />,
   },
   {
     path: '/',
