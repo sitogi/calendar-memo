@@ -17,7 +17,7 @@ import { WeekOrigin } from '~/features/MonthCalendar/types';
 import { useDisplayDaysOfWeek } from '~/features/WeekCalendar/hooks/useDisplayDaysOfWeek';
 import { useDateParams } from '~/hooks/useDateParams';
 import { useNavigateWithViewTransition } from '~/hooks/useNavigateWithViewTransition';
-import { compareWithCurrentDate } from '~/utils/date';
+import { compareWithCurrentDate, weekdayStrMap } from '~/utils/date';
 
 export const WeekCalendar = (): JSX.Element => {
   const { year, month, day } = useDateParams();
@@ -85,9 +85,17 @@ export const WeekCalendar = (): JSX.Element => {
           </DropdownMenu>
         </div>
       </div>
-      {displayDates.map((date) => (
-        <div key={date.toDateString()}>{date.toDateString()}</div>
-      ))}
+      <div className="flex justify-center h-full w-full">
+        <div className="h-full w-20 text-center">0</div>
+        {displayDates.map((date) => (
+          <div key={date.toDateString()} className="h-full flex-grow">
+            <div className="text-center space-y-1">
+              <div className="text-xs">{weekdayStrMap[date.getDay()]}</div>
+              <div className="text-2xl">{date.getDate()}</div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

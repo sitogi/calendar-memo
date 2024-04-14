@@ -6,7 +6,7 @@ type Props = { children: ReactNode } & ComponentProps<'a'>;
 
 export const ButtonLink = ({ children, ...linkProps }: Props): JSX.Element => {
   return (
-    <a {...linkProps} className={cn(linkProps.className, buttonVariants({ variant: 'ghost' }))}>
+    <a {...linkProps} className={cn(linkProps.className, buttonVariants({ variant: 'ghost' }), 'cursor-pointer')}>
       {children}
     </a>
   );

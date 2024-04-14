@@ -4,6 +4,16 @@ import { WeekOrigin } from '~/features/MonthCalendar/types';
 
 export type WeekDay = 'Sun' | 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat';
 
+export const weekdayStrMap: { [key: number]: WeekDay } = {
+  0: 'Sun',
+  1: 'Mon',
+  2: 'Tue',
+  3: 'Wed',
+  4: 'Thu',
+  5: 'Fri',
+  6: 'Sat',
+};
+
 export function getWeekDays(weekOrigin: WeekOrigin = 'sun'): WeekDay[] {
   if (weekOrigin === 'sun') {
     return ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
